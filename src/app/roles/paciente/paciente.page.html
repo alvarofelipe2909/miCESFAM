@@ -1,0 +1,50 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Bienvenido paciente</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">paciente</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="card" style="width: 18rem;">
+    <img src="assets/img/consultas.jpg" class="card-img-top" alt="consultas.jpg">
+    <div class="card-body">
+      <h5 class="card-title">Reserva de horas</h5>
+      <p class="card-text">Aquí podrás reservar las horas de tus consultas y/o exámenes!</p>
+      <a [routerLink]="['/reservas-paciente']" class="btn btn-primary">Ir</a>
+    </div>
+  </div>
+
+  <div class="card" style="width: 18rem;">
+    <img src="assets/img/farmacia.jpg" class="card-img-top" alt="farmacia.jpg">
+    <div class="card-body">
+      <h5 class="card-title">Retiro Medicamentos</h5>
+      <p class="card-text">Aquí podrás visualizar toda la información sobre tus medicamentos.</p>
+      <a href="#" class="btn btn-primary">Ir</a>
+    </div>
+  </div>
+
+  <div class="card" style="width: 18rem;">
+    <img src="assets/img/recetas.jpg" class="card-img-top" alt="recetas.jpg">
+    <div class="card-body">
+      <h5 class="card-title">Ver recetas</h5>
+      <p class="card-text">Aquí podrás visualizar las recetas asignadas por tus médicos!</p>
+      <a href="#" class="btn btn-primary">Ir</a>
+    </div>
+  </div>
+
+  <div class="card" style="width: 18rem;">
+    <img src="assets/img/examen.jpg" class="card-img-top" alt="examen.jpg">
+    <div class="card-body">
+      <h5 class="card-title">Ver exámenes</h5>
+      <p class="card-text">Aquí podrás ver los resultados de tus exámenes </p>
+      <a href="#" class="btn btn-primary">Ir</a>
+    </div>
+  </div>
+</ion-content>
+

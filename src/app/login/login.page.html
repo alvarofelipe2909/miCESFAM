@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+    <ion-item>
+      <ion-label position="floating" >RUT(Sin puntos ni guíon)</ion-label>
+      <ion-input formControlName="rut" type="text" placeholder="111111111"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input formControlName="password" type="password"></ion-input>
+    </ion-item>
+    <ion-button expand="full" type="submit">Login</ion-button>
+  </form>
+  <ion-button expand="full" routerLink="/registro">¿No tienes cuenta? Registrate aquí</ion-button>
+  <div *ngIf="errorMensaje" class="error-message">{{ errorMensaje }}</div>
+  <div *ngIf="succesMensaje" class="success-message">{{ succesMensaje }}</div>
+</ion-content>

@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Gestión de Reservas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="reservas.length > 0">
+    <ion-item *ngFor="let reserva of reservas">
+      <ion-label>
+        <h2>Paciente: {{reserva.pacienteNombre}}</h2>
+        <p>Médico: {{reserva.medicoNombre}}</p>
+        <p>Especialidad: {{reserva.especialidad}}</p>
+        <p>Fecha: {{reserva.fecha}}</p>
+        <p>Hora: {{reserva.hora}}</p>
+        <p>Estado: {{reserva.estado}}</p>
+      </ion-label>
+      <!-- Botones para editar o eliminar la reserva -->
+      <ion-button color="primary" (click)="editarReserva(reserva.id, reserva)">Editar</ion-button>
+      <ion-button color="danger" (click)="eliminarReserva(reserva.id)">Eliminar</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <!-- Si no hay reservas -->
+  <ion-item *ngIf="reservas.length === 0">
+    <ion-label>No hay reservas disponibles.</ion-label>
+  </ion-item>
+
+  <ion-fab-button routerLink="/reservas">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+
+</ion-content>

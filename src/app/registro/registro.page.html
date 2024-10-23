@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Bienvenido al registro de usuarios!</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input formControlName="nombre" type="nombre" placeholder="Ingrese su nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Apellido</ion-label>
+      <ion-input formControlName="apellido" type="apellido" placeholder="Ingrese su apellido"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Correo</ion-label>
+      <ion-input formControlName="email" type="email" placeholder="Ingrese su correo"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+      <p>Correo inválido</p>
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating">RUT (Sin puntos ni guíon)</ion-label>
+      <ion-input formControlName="rut" type="text" placeholder="111111111"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="registerForm.get('rut')?.invalid && registerForm.get('rut')?.touched">
+      <p>RUT inválido</p>
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input formControlName="password" type="password" placeholder="Ingrese su contraseña"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+      <p>La contraseña debe tener al menos 6 caracteres</p>
+    </ion-text>
+
+    <ion-item>
+      <ion-label position="floating">Confirmar Contraseña</ion-label>
+      <ion-input formControlName="confirmPassword" type="password" placeholder="Confirme su contraseña"></ion-input>
+    </ion-item>
+    <ion-text color="danger" *ngIf="registerForm.hasError('passwordsDontMatch') && registerForm.get('confirmPassword')?.touched">
+      <p>Las contraseñas no coinciden</p>
+    </ion-text>
+
+    <!-- Selección de rol -->
+    <ion-item>
+      <ion-label>Rol</ion-label>
+      <ion-select formControlName="role" placeholder="Seleccione su rol">
+        <ion-select-option value="Paciente">Paciente</ion-select-option>
+        <ion-select-option value="Médico">Médico</ion-select-option>
+        <ion-select-option value="Farmacéutico">Farmacéutico</ion-select-option>
+        <ion-select-option value="Administrativo">Administrativo</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-text color="danger" *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched">
+      <p>Por favor, seleccione un rol</p>
+    </ion-text>
+
+    <!-- Campo de especialidad, solo se muestra si el rol es Médico -->
+    <ion-item *ngIf="registerForm.get('role')?.value === 'Médico'">
+      <ion-label>Especialidad</ion-label>
+      <ion-select formControlName="especialidad" placeholder="Seleccione su especialidad">
+        <ion-select-option *ngFor="let esp of especialidades" [value]="esp.nombre">{{ esp.nombre }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button expand="full" type="submit" [disabled]="registerForm.invalid">Registrar</ion-button>
+  </form>
+
+  <ion-button expand="full" routerLink="/login">¿Ya tienes cuenta? Inicia sesión aquí</ion-button>
+
+  <p *ngIf="errorMensaje" style="color: red;">{{ errorMensaje }}</p>
+  <p *ngIf="successMensaje" style="color: green;">{{ successMensaje }}</p>
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "miCESFAM",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ isEditMode ? 'Editar Reserva' : 'Crear Reserva' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form *ngIf="reservaForm" [formGroup]="reservaForm" (ngSubmit)="onSubmit()">
+    
+    <!-- Seleccionar especialidad -->
+    <ion-item>
+      <ion-label>Especialidad</ion-label>
+      <ion-select formControlName="especialidad" placeholder="Seleccione la especialidad">
+        <ion-select-option *ngFor="let especialidad of especialidades" [value]="especialidad.id">{{ especialidad.nombre }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Seleccionar médico -->
+    <ion-item>
+      <ion-label>Médico</ion-label>
+      <ion-select formControlName="medicoId" placeholder="Seleccione el médico">
+        <ion-select-option *ngFor="let medico of medicos" [value]="medico.id">{{ medico.nombre }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Seleccionar fecha -->
+    <ion-item>
+      <ion-label>Fecha</ion-label>
+      <ion-datetime formControlName="fecha"></ion-datetime>
+    </ion-item>
+
+    <!-- Seleccionar hora -->
+    <ion-item>
+      <ion-label>Hora</ion-label>
+      <ion-datetime formControlName="hora" presentation="time" display-format="HH:mm" picker-format="HH:mm"></ion-datetime>
+    </ion-item>
+
+    <!-- Botón para enviar el formulario -->
+    <ion-button expand="full" type="submit">{{ isEditMode ? 'Actualizar Reserva' : 'Crear Reserva' }}</ion-button>
+  </form>
+</ion-content>
+

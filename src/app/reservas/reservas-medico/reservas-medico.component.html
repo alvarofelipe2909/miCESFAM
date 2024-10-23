@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Reservas Asignadas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="reservas.length > 0">
+    <ion-item *ngFor="let reserva of reservas">
+      <ion-label>
+        <h2>Paciente: {{reserva.pacienteNombre}}</h2>
+        <p>Especialidad: {{reserva.especialidad}}</p>
+        <p>Fecha: {{reserva.fecha}}</p>
+        <p>Hora: {{reserva.hora}}</p>
+        <p>Estado: {{reserva.estado}}</p>
+      </ion-label>
+      <!-- Botones para confirmar o completar la reserva -->
+      <ion-button color="primary" (click)="confirmarReserva(reserva.id)" *ngIf="reserva.estado === 'Pendiente'">Confirmar</ion-button>
+      <ion-button color="success" (click)="completarReserva(reserva.id)" *ngIf="reserva.estado === 'Confirmada'">Completar</ion-button>
+    </ion-item>
+  </ion-list>
+
+  <!-- Si no hay reservas -->
+  <ion-item *ngIf="reservas.length === 0">
+    <ion-label>No tienes reservas asignadas.</ion-label>
+  </ion-item>
+</ion-content>
