@@ -1,0 +1,66 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Gestión de medicamentos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form (ngSubmit)="onSubmit()" class="form">
+    <ion-item>
+      <ion-label position="floating">Nombre del Remedio</ion-label>
+      <ion-input [(ngModel)]="remedio.nombre" name="nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-input [(ngModel)]="remedio.descripcion" name="descripcion"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Cantidad</ion-label>
+      <ion-input type="number" [(ngModel)]="remedio.cantidad" name="cantidad"></ion-input>
+    </ion-item>
+    <div class="full-image">
+      <ion-item>
+        <ion-label>Imagen</ion-label>
+        <input type="file" (change)="onFileSelected($event)">
+      </ion-item>
+    </div>
+    <ion-button expand="block" type="submit" class="btn-custom-primary">{{ isEditing ? 'Actualizar' : 'Agregar' }} Remedio</ion-button>
+  </form>
+
+  <div class="pedido-container">
+    <ion-list>
+      <ion-list-header>
+        <ion-label><h1>Lista de Medicamentos</h1></ion-label>
+      </ion-list-header>
+      <ion-searchbar 
+      [(ngModel)]="searchTerm"
+      placeholder="Buscar medicamentos" 
+      animated="true"
+      class="custom-searchbar">
+    </ion-searchbar>
+    <ng-container>
+        <ion-list *ngIf="filtrarRemedios().length > 0; else noRemedios" class="ion-no-padding">
+          <ion-item *ngFor="let remedio of filtrarRemedios()" class="medicamento-item">
+            <ion-thumbnail slot="start">
+              <img [src]="remedio.imageUrl" class="full-image">
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ remedio.nombre }}</h2>
+              <p>{{ remedio.descripcion }}</p>
+              <p>Cantidad disponible: {{ remedio.cantidad }}</p>
+            </ion-label>
+            <ion-button expand="block" class="btn-custom-primary" (click)="editRemedio(remedio)">Editar</ion-button>
+            <ion-button expand="block" class="btn-custom-primary" (click)="deleteRemedio(remedio.id || '')">Eliminar</ion-button>
+          </ion-item>
+        </ion-list>
+        
+        <ng-template #noRemedios>
+          <div>
+            <h3>No hay remedios con el nombre buscado.</h3>
+            <p>Si busca un remedio que no aparece, porfavor agregarlo en la gestión de medicamentos.</p>
+          </div>
+        </ng-template>
+    </ng-container>
+    </ion-list>
+   </div>
+</ion-content>

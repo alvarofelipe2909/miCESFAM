@@ -1,0 +1,134 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="register-container">
+    <!-- Header de la página -->
+    <div class="register-header">
+      <h1>Crear cuenta</h1>
+      <p>Complete los siguientes campos para registrarse</p>
+    </div>
+
+    <!-- Formulario de Registro -->
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="register-form">
+      <div class="form-section">
+        <h2>Información Personal</h2>
+        <ion-list>
+          <div class="input-group">
+            <ion-item>
+              <ion-label position="floating">Nombre</ion-label>
+              <ion-input formControlName="nombre"></ion-input>
+            </ion-item>
+            <div class="error-message" *ngIf="registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Nombre es requerido</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <ion-item>
+              <ion-label position="floating">Apellido</ion-label>
+              <ion-input formControlName="apellido"></ion-input>
+            </ion-item>
+            <div class="error-message" *ngIf="registerForm.get('apellido')?.invalid && registerForm.get('apellido')?.touched">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Apellido es requerido</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <ion-item>
+              <ion-label position="floating">Email</ion-label>
+              <ion-input formControlName="email" type="email" placeholder="ejemplo@gmail.com"></ion-input>
+            </ion-item>
+            <div class="error-message" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Email es requerido y debe ser válido</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <ion-item>
+              <ion-label position="floating">RUT</ion-label>
+              <ion-input formControlName="rut" placeholder="Sin puntos ni guión"></ion-input>
+            </ion-item>
+            <div class="error-message" *ngIf="registerForm.get('rut')?.invalid && registerForm.get('rut')?.touched">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>RUT es requerido</span>
+            </div>
+          </div>
+        </ion-list>
+      </div>
+
+      <div class="form-section">
+        <h2>Seguridad</h2>
+        <ion-list>
+          <div class="input-group">
+            <ion-item>
+              <ion-label position="floating">Contraseña</ion-label>
+              <ion-input formControlName="password" type="password"></ion-input>
+            </ion-item>
+            <div class="error-message" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Contraseña es requerida (mínimo 6 caracteres)</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <ion-item>
+              <ion-label position="floating">Confirmar Contraseña</ion-label>
+              <ion-input formControlName="confirmPassword" type="password"></ion-input>
+            </ion-item>
+            <div class="error-message" *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+              <ion-icon name="alert-circle-outline"></ion-icon>
+              <span>Las contraseñas no coinciden</span>
+            </div>
+          </div>
+        </ion-list>
+      </div>
+
+      <div class="form-section">
+        <h2>Tipo de Usuario</h2>
+  <ion-list class="custom-list">
+    <div class="input-group">
+    <ion-item>
+      <ion-label>Rol</ion-label>
+      <ion-select formControlName="role" (ionChange)="onRoleChange($event)" interface="action-sheet">
+        <ion-select-option value="Paciente">Paciente</ion-select-option>
+        <ion-select-option value="Medico">Médico</ion-select-option>
+        <ion-select-option value="Farmacéutico">Farmacéutico</ion-select-option>
+        <ion-select-option value="Administrativo">Administrativo</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+
+    <div class="input-group" *ngIf="isMedico">
+      <ion-item>
+        <ion-label>Especialidad</ion-label>
+        <ion-select formControlName="especialidad" interface="action-sheet">
+          <ion-select-option *ngFor="let especialidad of especialidades" [value]="especialidad">
+            {{ especialidad }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+    </ion-list>
+
+      <div class="form-actions">
+        <ion-button expand="block" type="submit" [disabled]="registerForm.invalid" class="btn-custom-primary">
+          <ion-icon name="person-add-outline" slot="start"></ion-icon>
+          Crear cuenta
+        </ion-button>
+        
+        <ion-button expand="block" fill="outline" routerLink="/login" class="btn-custom-outline">
+          <ion-icon name="log-in-outline" slot="start"></ion-icon>
+          ¿Ya tienes cuenta? Inicia sesión
+        </ion-button>
+      </div>
+    </div>
+  </form>
+  </div>
+</ion-content>

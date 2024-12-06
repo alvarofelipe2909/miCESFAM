@@ -1,42 +1,86 @@
-<ion-header>
+<ion-header class="modern-header">
   <ion-toolbar>
-    <ion-title>{{ isEditMode ? 'Editar Reserva' : 'Crear Reserva' }}</ion-title>
+    <ion-title></ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <form *ngIf="reservaForm" [formGroup]="reservaForm" (ngSubmit)="onSubmit()">
-    
-    <!-- Seleccionar especialidad -->
-    <ion-item>
-      <ion-label>Especialidad</ion-label>
-      <ion-select formControlName="especialidad" placeholder="Seleccione la especialidad">
-        <ion-select-option *ngFor="let especialidad of especialidades" [value]="especialidad.id">{{ especialidad.nombre }}</ion-select-option>
-      </ion-select>
-    </ion-item>
+<ion-content class="modern-content">
+  <div class="logo-container">
+    <img src="assets/img/logo.png" alt="CESFAM Logo" class="cesfam-logo">
+  </div>
 
-    <!-- Seleccionar médico -->
-    <ion-item>
-      <ion-label>Médico</ion-label>
-      <ion-select formControlName="medicoId" placeholder="Seleccione el médico">
-        <ion-select-option *ngFor="let medico of medicos" [value]="medico.id">{{ medico.nombre }}</ion-select-option>
-      </ion-select>
-    </ion-item>
+  <div class="form-container">
+    <form *ngIf="reservasForm" [formGroup]="reservasForm" (ngSubmit)="reservarHora()" class="modern-form">
+      <!-- Selección de Especialidad -->
+      <ion-card class="form-card">
+        <ion-item lines="none">
+          <ion-label position="stacked" class="input-label">Seleccione una Especialidad</ion-label>
+          <ion-select formControlName="especialidad"
+                      (ionChange)="onEspecialidadChange($event.detail.value)"
+                      interface="action-sheet"
+                      class="modern-select">
+            <ion-select-option *ngFor="let especialidad of especialidades"
+                              [value]="especialidad.nombre">
+              {{ especialidad.nombre }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-card>
 
-    <!-- Seleccionar fecha -->
-    <ion-item>
-      <ion-label>Fecha</ion-label>
-      <ion-datetime formControlName="fecha"></ion-datetime>
-    </ion-item>
+      <!-- Selección de Médico -->
+      <ion-card class="form-card" *ngIf="medicos.length > 0">
+        <ion-item lines="none">
+          <ion-label position="stacked" class="input-label">Seleccione un Médico</ion-label>
+          <ion-select formControlName="medicoId"
+                      (ionChange)="onMedicoChange($event.detail.value)"
+                      interface="action-sheet"
+                      class="modern-select">
+            <ion-select-option *ngFor="let medico of medicos"
+                              [value]="medico.id">
+              {{ medico.nombre }} {{ medico.apellido }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-card>
 
-    <!-- Seleccionar hora -->
-    <ion-item>
-      <ion-label>Hora</ion-label>
-      <ion-datetime formControlName="hora" presentation="time" display-format="HH:mm" picker-format="HH:mm"></ion-datetime>
-    </ion-item>
+      <!-- Selección de Fecha -->
+      <ion-card class="form-card" *ngIf="disponibilidad.length > 0">
+        <ion-item lines="none">
+          <ion-label position="stacked" class="input-label">Seleccione una Fecha</ion-label>
+          <ion-datetime presentation="date"
+                        [firstDayOfWeek]="1"
+                        formControlName="fecha"
+                        [min]="minDate"
+                        [isDateEnabled]="isWeekday"
+                        (ionChange)="onFechaChange($event.detail.value)"
+                        class="modern-datetime">
+          </ion-datetime>
+        </ion-item>
+      </ion-card>
 
-    <!-- Botón para enviar el formulario -->
-    <ion-button expand="full" type="submit">{{ isEditMode ? 'Actualizar Reserva' : 'Crear Reserva' }}</ion-button>
-  </form>
+      <!-- Selección de Hora -->
+      <ion-card class="form-card" *ngIf="horasDisponibles.length > 0">
+        <ion-item lines="none">
+          <ion-label position="stacked" class="input-label">Seleccione una Hora</ion-label>
+          <div class="hora-buttons">
+            <ion-button *ngFor="let hora of horasDisponibles"
+                        (click)="seleccionarHora(hora)"
+                        [class.selected]="horaSeleccionada === hora"
+                        fill="outline"
+                        size="small">
+              {{ hora }}
+            </ion-button>
+          </div>
+        </ion-item>
+      </ion-card>
+
+      <!-- Botón para reservar -->
+      <ion-button expand="block"
+                  type="submit"
+                  [disabled]="!reservasForm.valid"
+                  class="submit-button">
+        Reservar Hora
+      </ion-button>
+    </form>
+  </div>
 </ion-content>
-

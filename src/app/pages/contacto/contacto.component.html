@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Contacto</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="contact-container">
+    <div class="contact-header">
+        <h1>Contáctanos</h1>
+        <p>Estamos aquí para ayudarte. Completa el formulario a continuación o utiliza la información de contacto para comunicarte con nosotros.</p>
+    </div>
+
+    <form *ngIf="contactoForm" [formGroup]="contactoForm" (ngSubmit)="onSubmit()">
+        <ion-item>
+            <ion-label position="floating">Nombre</ion-label>
+            <ion-input formControlName="nombre"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Correo</ion-label>
+            <ion-input formControlName="email" type="email"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Asunto</ion-label>
+            <ion-input formControlName="asunto"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Mensaje</ion-label>
+            <ion-textarea formControlName="mensaje"></ion-textarea>
+        </ion-item>
+        <ion-button expand="block" type="submit" class="btn-custom-primary">Enviar</ion-button>
+    </form>
+
+    <div class="contact-info">
+        <h2>Información de Contacto</h2>
+        <p><ion-icon name="call-outline"></ion-icon> Teléfono: +56 9 1234 5678</p>
+        <p><ion-icon name="mail-outline"></ion-icon> Correo: contacto&#64;cesfam.cl</p>
+        <p><ion-icon name="location-outline"></ion-icon> Dirección: Calle Ejemplo 123, Ciudad</p>
+        </div>
+    </div>
+</ion-content>

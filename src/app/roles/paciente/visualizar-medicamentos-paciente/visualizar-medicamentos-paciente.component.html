@@ -1,0 +1,68 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Lista de Medicamentos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Lista para hacer pedido -->
+   <div class="pedido-container">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <ion-list formArrayName="output">
+        <ion-list-header>
+          <ion-label>Solicitar Pedido de Medicamentos</ion-label>
+        </ion-list-header>
+        <ion-item *ngFor="let c of output.controls; let i = index">
+          <div [formGroupName]="i" class="lista-pedido">
+            <ion-label class="pedido-label"> Medicamento #{{i+1}}</ion-label>
+            <ion-select formControlName="nombre" label="Nombre">
+              <ion-select-option *ngFor="let remedio of remedios" value="{{remedio.nombre}}">{{remedio.nombre}}</ion-select-option>
+            </ion-select>
+            <ion-input formControlName="cantidad" label="Cantidad" type="number" placeholder="0" >
+            </ion-input>
+            <ion-button (click)="deleteMedicamento(i)" color="danger"> BORRAR
+            </ion-button>
+          </div> 
+        </ion-item>
+        <ion-button (click)="addMedicamento()">AGREGAR</ion-button>
+        <ion-button type="submit">Enviar Pedido</ion-button>
+      </ion-list>
+    </form>
+   </div>
+  
+  <!-- Lista de remedios -->
+   <div class="pedido-container">
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Lista de Medicamentos</ion-label>
+      </ion-list-header>
+      <ion-searchbar 
+      [(ngModel)]="searchTerm"
+      placeholder="Buscar medicamentos" 
+      animated="true"
+      class="custom-searchbar">
+    </ion-searchbar>
+    <ng-container>
+        <ion-list *ngIf="filtrarRemedios().length > 0; else noRemedios" class="ion-no-padding">
+          <ion-item *ngFor="let remedio of filtrarRemedios()" class="medicamento-item">
+            <ion-thumbnail slot="start">
+              <img [src]="remedio.imageUrl" class="full-image">
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{ remedio.nombre }}</h2>
+              <p>{{ remedio.descripcion }}</p>
+              <p>Cantidad disponible: {{ remedio.cantidad }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        
+        <ng-template #noRemedios>
+          <div>
+            <h3>No hay remedios con el nombre buscado.</h3>
+            <p>Si busca un remedio que no aparece, porfavor comunicarse directamente con un administrativo.</p>
+          </div>
+        </ng-template>
+    </ng-container>
+    </ion-list>
+   </div>
+</ion-content>

@@ -5,7 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { AdministrativoPageRoutingModule } from './administrativo-routing.module';
-
+import { SharedModule } from 'src/app/shared/shared.module';
 import { AdministrativoPage } from './administrativo.page';
 
 const routes: Routes = [
@@ -21,7 +21,8 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     AdministrativoPageRoutingModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedModule
   ],
   declarations: [AdministrativoPage]
 })

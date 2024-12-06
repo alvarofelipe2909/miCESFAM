@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Notificaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="notifications.length > 0; else emptyState">
+    <ion-card *ngFor="let notification of notifications" [class.unread]="!notification.isRead">
+      <ion-card-header>
+        <ion-card-title>{{ notification.title }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <p>{{ notification.message }}</p>
+      </ion-card-content>
+      <ion-item lines="none">
+        <ion-button fill="clear" (click)="markAsRead(notification.id)" [disabled]="notification.isRead">
+          <ion-icon slot="icon-only" name="checkmark-done-outline"></ion-icon>
+        </ion-button>
+        <ion-button color="danger" fill="clear" (click)="deleteNotification(notification.id)">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card>
+  </ion-list>
+
+  <ng-template #emptyState>
+    <div class="empty-state">
+      <ion-icon name="notifications-off-outline" class="empty-icon"></ion-icon>
+      <p class="empty-text">No tienes notificaciones aún</p>
+    </div>
+  </ng-template>
+</ion-content>

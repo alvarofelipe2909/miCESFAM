@@ -1,123 +1,157 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ReservaService } from 'src/app/services/reservas.service';
-import { AuthService} from 'src/app/services/auth.service';
-import { EspecialidadesService } from 'src/app/services/especialidades.service';
+import { ReservaService } from '../../services/reservas.service';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+import { EmailService } from 'src/app/services/email.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-crud-reservas',
   templateUrl: './crud-reservas.component.html',
-  styleUrls: ['./crud-reservas.component.scss'],
+  styleUrls: ['./crud-reservas.component.scss']
 })
-export class CrudReservasComponent  implements OnInit {
-
-  reservaForm: FormGroup | undefined;
-  especialidades: any[] = [];
+export class CrudReservasComponent implements OnInit {
   medicos: any[] = [];
-  isEditMode = false;
-  reservaId: string = '';
-  userRole: string | undefined;
+  disponibilidad: any[] = [];
+  horasDisponibles: string[] = [];
+  especialidades: any[] = [];
+  reservasForm!: FormGroup;
+  horaSeleccionada: string = '';
+  minDate: string;
+  currentUser: any;
 
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private reservaService: ReservaService,
+    private reservasService: ReservaService,
     private authService: AuthService,
-    private especialidadesService: EspecialidadesService // Inyectar el servicio de especialidades
-  ) {}
-
-  ngOnInit() {
-    this.initializeForm();
-
-    // Verificar si es edición
-    this.reservaId = this.route.snapshot.paramMap.get('id') || '';
-    if (this.reservaId) {
-      this.isEditMode = true;
-      this.loadReserva(this.reservaId);
-    }
-
-    // Cargar las especialidades y médicos (si ya tienes estos datos)
-    this.loadEspecialidades();
-    this.loadMedicos();
-
-    // Obtener el rol del usuario
-    this.authService.getCurrentUser().subscribe(user => {
-      if (user) {
-        this.authService.getUserRoleFromFirestore(user.uid).subscribe(role => {
-          this.userRole = role;
-        });
-      } else {
-        console.error('No user found');
-        this.router.navigate(['/login']);
-      }
-    });
-
+    private router: Router,
+    private emailService: EmailService,
+    private toastController: ToastController
+  ) {
+    const today = new Date();
+    this.minDate = today.toISOString().split('T')[0];
   }
 
-  
+  ngOnInit() {
+    this.initForm();
+    this.loadUserData();
+    this.loadEspecialidades();
+  }
 
-  initializeForm() {
-    this.reservaForm = this.fb.group({
+  private initForm() {
+    this.reservasForm = this.fb.group({
       especialidad: ['', Validators.required],
       medicoId: ['', Validators.required],
       fecha: ['', Validators.required],
-      hora: ['', Validators.required],
-      estado: ['', Validators.required],
+      hora: ['', Validators.required]
     });
   }
 
-  loadEspecialidades() {
-    this.especialidadesService.getEspecialidades().subscribe((data: any[]) => {
-      this.especialidades = data;
-    })
-  }
-
-  loadMedicos() {
-    this.reservaService.getMedicos().subscribe(data => {
-      this.medicos = data;
+  private loadUserData() {
+    this.authService.getCurrentUser().subscribe(user => {
+      this.currentUser = user;
     });
   }
 
-  loadReserva(id: string) {
-    this.reservaService.obtenerReserva(id).subscribe((reserva) => {
-      if (this.reservaForm) {
-        this.reservaForm.patchValue(reserva);
+  private loadEspecialidades() {
+    this.reservasService.obtenerEspecialidades().subscribe(especialidades => {
+      this.especialidades = especialidades;
+    });
+  }
+
+  isWeekday = (dateString: string) => {
+    const date = new Date(dateString);
+    const utcDay = date.getUTCDay();
+    return utcDay !== 0 && utcDay !== 6;
+  };
+
+  onEspecialidadChange(especialidad: string) {
+    this.reservasService.obtenerMedicosPorEspecialidad(especialidad).subscribe(medicos => {
+      this.medicos = medicos;
+      this.limpiarDisponibilidad();
+    });
+  }
+
+  onMedicoChange(medicoId: string) {
+    this.reservasService.obtenerDisponibilidadPorMedico(medicoId).subscribe(disponibilidad => {
+      this.disponibilidad = disponibilidad;
+      if (this.reservasForm?.get('fecha')?.value) {
+        this.onFechaChange(this.reservasForm.get('fecha')?.value);
       }
     });
   }
 
-  onSubmit() {
-    if (this.reservaForm?.valid) {
-      if (this.isEditMode) {
-        this.reservaService.actualizarReserva(this.reservaId, this.reservaForm.value)
-          .then(() => {
-            this.redirectBasedOnRole(); // Redirige basado en el rol del usuario
-          })
-          .catch(error => console.log(error));
-      } else {
-        this.reservaService.crearReserva(this.reservaForm.value)
-          .then(() => {
-            this.redirectBasedOnRole(); // Redirige basado en el rol del usuario
-          })
-          .catch(error => console.log(error));
-      }
-    }
-  }
-
-  redirectBasedOnRole() {
-    if (this.userRole === 'Administrativo') {
-      this.router.navigate(['/reservas-administrativo']);
-    } else if (this.userRole === 'Paciente') {
-      this.router.navigate(['/reservas-paciente']);
+  onFechaChange(value: any) {
+    const fechaSeleccionada = typeof value === 'string' ? value.split('T')[0] : '';
+    const disponibilidadFecha = this.disponibilidad.find(disp => disp.fechas.includes(fechaSeleccionada));
+    
+    if (disponibilidadFecha) {
+      this.reservasService.obtenerReservasPorFecha(fechaSeleccionada).subscribe(reservas => {
+        const horasOcupadas = reservas.map(reserva => reserva.hora);
+        this.horasDisponibles = disponibilidadFecha.horas.filter((hora: any) => !horasOcupadas.includes(hora));
+      });
     } else {
-      this.router.navigate(['/login']); // Redirige a la página principal si el rol no es reconocido
+      this.horasDisponibles = [];
     }
+    this.reservasForm.get('fecha')?.setValue(fechaSeleccionada);
   }
 
+  seleccionarHora(hora: string) {
+    this.horaSeleccionada = hora;
+    this.reservasForm.get('hora')?.setValue(hora);
+  }
+
+  limpiarDisponibilidad() {
+    this.disponibilidad = [];
+    this.horasDisponibles = [];
+    this.horaSeleccionada = '';
+  }
+
+  reservarHora() {
+    if (this.reservasForm.valid) {
+      const reserva = this.reservasForm.value;
+      const medico = this.medicos.find(m => m.id === reserva.medicoId);
+      const reservaCompleta = {
+        ...reserva,
+        nombreCompletoPaciente: `${this.currentUser?.nombre || ''} ${this.currentUser?.apellido || ''}`,
+        rutPaciente: this.currentUser?.rut || '',
+        nombreCompletoMedico: `${medico.nombre} ${medico.apellido}`,
+        emailPaciente: this.currentUser?.email || '',
+        estado: 'Pendiente'
+      };
+  
+      this.reservasService.crearReserva(reservaCompleta)
+        .then(async () => {
+          // Enviar correo electrónico al paciente
+          this.emailService.sendEmailReserva(
+            reservaCompleta.nombreCompletoPaciente,
+            reservaCompleta.nombreCompletoMedico,
+            reservaCompleta.fecha,
+            reservaCompleta.hora,
+            reservaCompleta.emailPaciente
+          );
+  
+          const toast = await this.toastController.create({
+            message: 'Reserva creada y correo enviado con éxito',
+            duration: 3000,
+            color: 'success'
+          });
+          toast.present();
+  
+          this.router.navigate(['/reservas-paciente']);
+        })
+        .catch(async error => {
+          console.error('Error al guardar la reserva:', error);
+          const toast = await this.toastController.create({
+            message: 'Error al crear la reserva',
+            duration: 3000,
+            color: 'danger'
+          });
+          toast.present();
+        });
+    }
+  }
+  
 }
-
-
-

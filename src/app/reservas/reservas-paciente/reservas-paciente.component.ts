@@ -1,6 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ReservaService } from '../../services/reservas.service';
 import { AuthService } from '../../services/auth.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-reservas-paciente',
@@ -9,33 +10,98 @@ import { AuthService } from '../../services/auth.service';
 })
 export class ReservasPacienteComponent implements OnInit {
   reservas: any[] = [];
-  userId: string = '';
+  reservasFiltradas: any[] = [];
+  userRut: string = '';
+  filtroEstado: string = 'Todas';
+  filtroAnio: string = ''; // Filtro por año
+  filtroMes: string = ''; // Filtro por mes
 
-  constructor(@Inject(ReservaService) private reservaService: ReservaService, @Inject(AuthService) private authService: AuthService) {}
+  aniosDisponibles: string[] = []; // Años dinámicos
+  mesesDisponibles = [
+    { label: 'Enero', value: '01' },
+    { label: 'Febrero', value: '02' },
+    { label: 'Marzo', value: '03' },
+    { label: 'Abril', value: '04' },
+    { label: 'Mayo', value: '05' },
+    { label: 'Junio', value: '06' },
+    { label: 'Julio', value: '07' },
+    { label: 'Agosto', value: '08' },
+    { label: 'Septiembre', value: '09' },
+    { label: 'Octubre', value: '10' },
+    { label: 'Noviembre', value: '11' },
+    { label: 'Diciembre', value: '12' },
+  ];
+
+  constructor(
+    private reservaService: ReservaService,
+    private authService: AuthService,
+    private alertController: AlertController
+  ) {}
 
   ngOnInit() {
-    this.authService.getUserUid().then((uid) => {
-      if (uid !== null) {
-        this.userId = uid;
+    this.authService.getCurrentUser().subscribe(user => {
+      if (user) {
+        this.userRut = user.rut;
+        this.obtenerReservas();
+        this.initAniosDisponibles();
       }
-      this.obtenerReservas();
     });
   }
 
   obtenerReservas() {
-    this.reservaService.obtenerReservasPorPaciente(this.userId).subscribe((reservas: any[]) => {
+    this.reservaService.obtenerReservasPorPaciente(this.userRut).subscribe((reservas: any[]) => {
       this.reservas = reservas;
-    });
-  }
-  editarReserva(id: string, nuevaData: any) {
-    this.reservaService.actualizarReserva(id, nuevaData).then(() => {
-      this.obtenerReservas();  // Actualizar después de editar
+      this.filtrarReservas();
     });
   }
 
-  cancelarReserva(id: string) {
-    this.reservaService.eliminarReserva(id).then(() => {
-      this.obtenerReservas();  // Actualizar después de eliminar
+  filtrarReservas() {
+    this.reservasFiltradas = this.reservas.filter(reserva => {
+      let coincideEstado = this.filtroEstado === 'Todas' || reserva.estado === this.filtroEstado;
+      let coincideFecha =
+        (!this.filtroAnio || reserva.fecha.startsWith(this.filtroAnio)) &&
+        (!this.filtroMes || reserva.fecha.substring(5, 7) === this.filtroMes);
+
+      return coincideEstado && coincideFecha;
     });
+  }
+
+  setFiltroEstado(estado: string) {
+    this.filtroEstado = estado;
+    this.filtrarReservas();
+  }
+
+  initAniosDisponibles() {
+    const currentYear = new Date().getFullYear();
+    const initialYear = 2024;
+    this.aniosDisponibles = [];
+  
+    for (let year = currentYear; year >= initialYear; year--) {
+      this.aniosDisponibles.push(year.toString());
+    }
+  }
+
+  async eliminarReserva(id: string) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar cancelación',
+      message: '¿Está seguro de que desea cancelar esta reserva?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          cssClass: 'secondary',
+        },
+        {
+          text: 'Eliminar',
+          handler: () => {
+            this.reservaService.eliminarReserva(id).then(() => {
+              this.obtenerReservas();
+            });
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 }

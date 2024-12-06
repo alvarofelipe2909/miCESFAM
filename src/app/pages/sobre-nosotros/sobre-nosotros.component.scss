@@ -1,0 +1,90 @@
+/* Fondo general */
+.about-container {
+    padding: 20px;
+    background-color: #fff;
+    color: var(--prussian-blue);
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+}
+
+  /* Cabecera */
+.about-header img {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.about-header h1 {
+    margin-top: 20px;
+    font-size: 28px;
+    color: #061a40ff;
+    font-weight: bold;
+}
+
+  /* Texto principal */
+.about-text p {
+    margin: 15px 0;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.about-text strong {
+    color: #061a40ff;
+}
+
+  /* Sección de valores */
+.about-values {
+    margin-top: 30px;
+}
+
+.about-values h2 {
+    font-size: 24px;
+    color: #061a40ff;
+    margin-bottom: 20px;
+}
+
+
+.values-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.value-item {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.value-item ion-icon {
+    font-size: 40px;
+    color: #006daaff;
+    margin-bottom: 10px;
+}
+
+.value-item h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: #006daaff;
+    font-weight: bold;
+}
+
+.value-item p {
+    font-size: 14px;
+    color: #003559ff;
+}
+
+  /* Responsividad */
+@media (max-width: 768px) {
+    .values-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+}

@@ -1,0 +1,74 @@
+<div class="header-container">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Ver Disponibilidad</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</div>
+
+<ion-content class="ion-padding">
+  <div class="form-container">
+    <div class="form-section">
+      <h3 class="section-title">Disponibilidades Registradas</h3>
+
+      <!-- Mostrar mensaje si no hay disponibilidades -->
+      <div *ngIf="disponibilidades.length === 0" class="no-data">
+        No hay disponibilidades registradas.
+      </div>
+
+      <!-- Listar disponibilidades -->
+      <div *ngFor="let disponibilidad of disponibilidades" class="disponibilidad-card">
+        <div *ngIf="editando === disponibilidad.id; else vistaNormal">
+          <!-- Vista de edición -->
+          <div class="edit-form">
+            <p><strong>Editar Fechas:</strong></p>
+            <ion-datetime
+            class="custom-datetime"
+            presentation="date"
+            [isDateEnabled]="isWeekday"
+            [firstDayOfWeek]="1"
+            presentation="date"
+            [multiple]="true"
+            [min]="minDate"
+              (ionChange)="actualizarFechas($event.detail.value)">
+            </ion-datetime>
+
+            <p><strong>Editar Horas:</strong></p>
+            <div class="hours-grid">
+              <!-- Crear un grid interactivo para horas -->
+              <div class="hora-box" *ngFor="let hora of nuevasHoras">
+                <input
+                type="text"
+                [value]="hora"
+                class="editable-hora"
+                (input)="actualizarHora(hora, $event)"/>
+
+                <ion-button fill="clear" color="danger" (click)="eliminarHora(hora)">
+                  ✖
+                </ion-button>
+              </div>
+              <ion-button expand="block" class="btn-custom" color="secondary" (click)="agregarHora()">Agregar Hora</ion-button>
+            </div>
+
+            <div class="action-buttons">
+              <ion-button color="primary" (click)="guardarEdicion(disponibilidad.id)">Guardar</ion-button>
+              <ion-button color="medium" (click)="cancelarEdicion()">Cancelar</ion-button>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #vistaNormal>
+          <!-- Vista normal -->
+          <div class="disponibilidad-info">
+            <p><strong>Fechas:</strong> {{ disponibilidad.fechas.join(', ') }}</p>
+            <p><strong>Horas:</strong> {{ disponibilidad.horas.join(', ') }}</p>
+          </div>
+          <div class="action-buttons">
+            <ion-button color="danger" (click)="eliminarDisponibilidad(disponibilidad.id)">Eliminar</ion-button>
+            <ion-button color="primary" (click)="iniciarEdicion(disponibilidad)">Editar</ion-button>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</ion-content>

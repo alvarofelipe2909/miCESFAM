@@ -1,0 +1,58 @@
+<div class="header-container">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Agregar Disponibilidad</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</div>
+
+<ion-content class="ion-padding">
+  <div class="form-container">
+    <form [formGroup]="disponibilidadForm" (ngSubmit)="onSubmit()">
+      <div class="form-section">
+        <h3 class="section-title">Seleccionar Fecha</h3>
+        <div class="date-picker-container">
+          <ion-datetime
+            class="custom-datetime"
+            presentation="date"
+            [firstDayOfWeek]="1"
+            [isDateEnabled]="isWeekday"
+            [multiple]="true"
+            display-format="YYYY-MM-DD"
+            [min]="minDate"
+            (ionChange)="agregarFecha($event.detail.value)">
+          </ion-datetime>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3 class="section-title">Horas Disponibles</h3>
+        <div class="hours-grid">
+          <div
+            *ngFor="let hora of horasDisponibles"
+            class="hora-chip"
+            [class.selected]="horasSeleccionadas.includes(hora)"
+            (click)="agregarHora(hora)">
+            {{ hora }}
+          </div>
+        </div>
+      </div>
+
+      <div class="button-container">
+        <ion-button
+          expand="block"
+          type="submit"
+          class="submit-button"
+          [disabled]="!disponibilidadForm.valid">
+          Guardar Disponibilidad
+        </ion-button>
+      </div>
+    </form>
+    <div class="button-custom">
+      <ion-button expand="block" fill="outline" routerLink="/reservas-medico" class="btn-custom-outline">Ir a la gestión de reservas</ion-button>
+    </div>
+    <div class="btn-custom">
+      <ion-button expand="block" routerLink="/ver-disponibilidad" class="btn-custom-primary">Ir a gestionar tu disponibilidad</ion-button>
+    </div>
+  </div>
+</ion-content>

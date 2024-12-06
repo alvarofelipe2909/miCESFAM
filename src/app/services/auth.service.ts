@@ -4,7 +4,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import firebase from 'firebase/compat/app';
+import { UserI } from '../models/remedio.model';
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +57,7 @@ export class AuthService {
         email,
         rut,
         role,
-        especialidad: role === 'Médico' ? especialidad : null
+        especialidad: role === 'Medico' ? especialidad : null
       });
       this.userRole = role;
       this.router.navigate(['/home']);
@@ -92,6 +92,20 @@ export class AuthService {
       throw error;
     }
   }
+  getUserInfo(uid: string, otherUid: string): Observable<UserI | null> {
+    const path = `Users/${uid}`;
+    return this.firestore.doc<UserI>(path).valueChanges().pipe(
+      map(user => user ? user : null)
+    );
+  }
+  getUserRut(uid: string): Observable<string> {
+    return this.firestore.collection('users').doc(uid).valueChanges().pipe(
+      map((user: any) => user.rut)
+    );
+  }
+  stateAuth(): Observable<any> {
+    return this.afAuth.authState;
+  }
 
   logout(): Promise<void> {
     return this.afAuth.signOut();
@@ -101,13 +115,43 @@ export class AuthService {
     return !!this.afAuth.currentUser;
   }
 
-  getCurrentUser(): Observable<firebase.User | null> {
-    return this.afAuth.authState;
+  getCurrentUser(): Observable<any> {
+    return this.afAuth.authState.pipe(
+      switchMap(user => {
+        if (user) {
+          return this.firestore.collection('users').doc(user.uid).valueChanges().pipe(
+            map(userData => userData ? ({ uid: user.uid, ...userData }) : { uid: user.uid })
+          );
+        } else {
+          return of(null);
+        }
+      })
+    );
   }
 
   getUserRoleFromFirestore(uid: string): Observable<string | undefined> {
+    if (this.userRole) {
+      return of(this.userRole); // Retorna el rol cacheado si está disponible
+    }
+  
     return this.firestore.collection('users').doc(uid).valueChanges().pipe(
-      map(user => (user as any)?.role)
+      map(user => {
+        const role = (user as any)?.role;
+        this.userRole = role; // Cachea el rol
+        return role;
+      })
     );
   }
+  
+  passwordReset(userEmail: string) {
+    this.afAuth.sendPasswordResetEmail(userEmail)
+    .then(() => {
+
+      console.log("Password reset email sent successfully!");
+    })
+    .catch((error) => {
+      console.error("Error sending password reset email:", error);
+    });
+  }
+
 }

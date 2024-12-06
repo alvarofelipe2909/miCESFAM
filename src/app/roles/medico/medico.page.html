@@ -10,32 +10,42 @@
       <ion-title size="large">Administra tus servicios</ion-title>
     </ion-toolbar>
   </ion-header>
-
+<app-index></app-index>
+<div class="cards-container">
   <div class="card" style="width: 18rem;">
     <img src="assets/img/consultas.jpg" class="card-img-top" alt="consultas.jpg">
     <div class="card-body">
       <h5 class="card-title">Reserva de horas</h5>
       <p class="card-text">Aquí podrás gestionar las consultas médicas y/o exámenes que estén agendados!</p>
-      <a href="#" class="btn btn-primary">Ir</a>
+      <div class="button-container">
+        <ion-button expand="block" routerLink="/reservas-medico" class="btn-custom-primary">Ir a la gestión de reservas</ion-button>
+      </div>
     </div>
   </div>
-
+</div>
+<div class="cards-container">
   <div class="card" style="width: 18rem;">
     <img src="assets/img/recetas.jpg" class="card-img-top" alt="recetas.jpg">
     <div class="card-body">
       <h5 class="card-title">Adjuntar recetas</h5>
       <p class="card-text">Aquí podrás enviar las recetas a tus pacientes</p>
-      <a href="#" class="btn btn-primary">Ir</a>
+      <div class="button-container">
+        <ion-button expand="block" routerLink="/receta-medico" class="btn-custom-primary">Ir a la gestión de recetas</ion-button>
+      </div>
     </div>
   </div>
-
+</div>
+<div class="cards-container">
   <div class="card" style="width: 18rem;">
     <img src="assets/img/examen.jpg" class="card-img-top" alt="examen.jpg">
     <div class="card-body">
       <h5 class="card-title">Subir exámenes</h5>
       <p class="card-text">Aquí podrás subir los resultados de exámenes a tus pacientes </p>
-      <a href="#" class="btn btn-primary">Ir</a>
+      <div class="button-container">
+        <ion-button expand="block" routerLink="/examen-medico" class="btn-custom-primary">Ir a la gestión de exámenes</ion-button>
+      </div>
     </div>
   </div>
+</div>
 </ion-content>
 

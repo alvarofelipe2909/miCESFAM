@@ -5,11 +5,14 @@ import { LoadingController, ToastController } from '@ionic/angular';
   providedIn: 'root'
 })
 export class InteractionService {
+  dismissLoading(): any {
+    throw new Error('Method not implemented.');
+  }
 
   loading: any;
 
   constructor(public toastController: ToastController,
-                     public loadingController: LoadingController) { }
+              public loadingController: LoadingController) { }
 
   async presentToast(mensaje: string) {
     const toast = await this.toastController.create({

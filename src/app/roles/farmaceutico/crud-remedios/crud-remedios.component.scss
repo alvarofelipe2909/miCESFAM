@@ -1,0 +1,29 @@
+:host {
+  ion-content {
+    --background: #f2f7f9;
+  }
+}
+
+.btn-custom-primary {
+  --background: #0260a7ff;
+  --color: #fff;
+}
+
+.full-image{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.form{
+  
+  ion-label{
+    color: #061a40ff;
+  }
+}
+
+.pedido-container{
+  h1{
+    color: #053772ff;
+  }
+}

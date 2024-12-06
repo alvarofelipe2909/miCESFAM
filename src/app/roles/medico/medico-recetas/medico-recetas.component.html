@@ -1,0 +1,128 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" color="primary"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Gestión de Recetas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="content-container">
+    <!-- Formulario de Nueva Receta -->
+    <ion-card class="form-card">
+      <ion-card-header>
+        <ion-card-title>Nueva Receta</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <form (ngSubmit)="onSubmit()" #recetaForm="ngForm">
+          <ion-item class="form-item">
+            <ion-label position="floating">
+              <ion-icon name="person-outline" class="input-icon"></ion-icon>
+              Nombre del Paciente
+            </ion-label>
+            <ion-input
+              [(ngModel)]="receta.nombrePaciente"
+              name="nombrePaciente"
+              required>
+            </ion-input>
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="floating">
+              <ion-icon name="card-outline" class="input-icon"></ion-icon>
+              RUT del Paciente
+            </ion-label>
+            <ion-input
+              [(ngModel)]="receta.rutPaciente"
+              name="rutPaciente"
+              (ionInput)="filterPacientes($event)"
+              required>
+            </ion-input>
+          </ion-item>
+
+          <ion-list *ngIf="filteredPacientes.length > 0" class="pacientes-suggestions">
+            <ion-item *ngFor="let paciente of filteredPacientes" button detail="false"
+                      (click)="seleccionarPaciente(paciente)">
+              <ion-label>
+                <h3>{{ paciente.nombre }}</h3>
+                <p>{{ paciente.rut }}</p>
+              </ion-label>
+            </ion-item>
+          </ion-list>
+
+          <ion-item class="form-item">
+            <ion-label position="floating">
+              <ion-icon name="document-text-outline" class="input-icon"></ion-icon>
+              Descripción
+            </ion-label>
+            <ion-textarea
+              [(ngModel)]="receta.descripcion"
+              name="descripcion"
+              rows="4"
+              placeholder="Ingrese los medicamentos y sus indicaciones"
+              required>
+            </ion-textarea>
+          </ion-item>
+
+          <ion-button
+            expand="block"
+            type="submit"
+            class="submit-button"
+            [disabled]="!recetaForm.form.valid">
+            <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+            Generar Receta
+          </ion-button>
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Lista de Recetas -->
+    <ion-card class="recetas-list-card">
+      <ion-card-header>
+        <ion-card-title>Recetas Generadas</ion-card-title>
+        <ion-searchbar
+          [(ngModel)]="searchTerm"
+          placeholder="Buscar recetas"
+          animated="true">
+        </ion-searchbar>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <ion-list *ngIf="!isLoading" class="recetas-list">
+          <ion-item-sliding *ngFor="let receta of filterRecetas()">
+            <ion-item class="receta-item">
+              <ion-label>
+                <h2>{{ receta.nombrePaciente }}</h2>
+                <p class="rut">RUT: {{ receta.rutPaciente }}</p>
+                <p class="descripcion">{{ receta.descripcion }}</p>
+                <p class="fecha">
+                  <ion-icon name="calendar-outline"></ion-icon>
+                  {{ receta.fecha }}
+                </p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item-options side="end">
+              <ion-item-option color="danger" (click)="deleteReceta(receta.id)">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+
+        <div *ngIf="isLoading" class="loading-container">
+          <ion-spinner></ion-spinner>
+          <p>Cargando recetas...</p>
+        </div>
+
+        <div *ngIf="!isLoading && filterRecetas().length === 0" class="empty-state">
+          <ion-icon name="document-text-outline"></ion-icon>
+          <h3>No hay recetas disponibles</h3>
+          <p>Las recetas generadas aparecerán aquí</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

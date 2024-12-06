@@ -1,0 +1,71 @@
+// General content styling
+.content-background {
+    background-color: #f2f2f7; // light gray for contrast
+  }
+  
+  // Styling for each receta card
+  .receta-card {
+    margin: 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // subtle shadow
+    --background: #fff;
+  
+    ion-card-header {
+      border-bottom: 1px solid #e0e0e0;
+    }
+  
+    ion-card-title {
+      font-weight: bold;
+      font-size: 1.2em;
+      color: #053772ff;
+    }
+  
+    ion-card-subtitle {
+      font-size: 0.9em;
+      color: #666;
+    }
+  
+    ion-card-content p {
+      font-size: 1em;
+      color: #555;
+      margin: 10px 0;
+    }
+  }
+  
+  // Styling for the download button
+  ion-button {
+    margin: 10px;
+    border-radius: 20px;
+    --padding-start: 10px;
+    --padding-end: 10px;
+    font-weight: bold;
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+    --color: white;
+  }
+  
+  .no-receta {
+    text-align: center;
+    padding: 40px 20px;
+    
+    ion-icon {
+      font-size: 64px;
+      color: var(--lapis-lazuli);
+      margin-bottom: 16px;
+    }
+    
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+      margin-bottom: 8px;
+    }
+    
+    p {
+      color: var(--ion-color-medium);
+      font-size: 14px;
+    }
+  }

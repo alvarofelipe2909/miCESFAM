@@ -5,27 +5,67 @@
 </ion-header>
 
 <ion-content>
-  <ion-list *ngIf="reservas.length > 0">
-    <ion-item *ngFor="let reserva of reservas">
+  
+  <div class="filtro-container">
+    <h3>Filtrar Reservas</h3>
+    
+    <!-- Filtro por Estado -->
+    <div class="filtro-estado">
+      <ion-button
+        *ngFor="let estado of ['Todas', 'Confirmada', 'Pendiente', 'Completada']"
+        [ngClass]="{'boton-activo': filtroEstado === estado, 'boton-inactivo': filtroEstado !== estado}"
+        (click)="setFiltroEstado(estado)">
+        {{ estado }}
+</ion-button>
+
+    </div>
+
+    <!-- Filtro por Año y Mes -->
+    <div class="filtro-fecha">
+      <ion-item>
+        <ion-label>Año</ion-label>
+        <ion-select [(ngModel)]="filtroAnio" (ionChange)="filtrarReservas()">
+          <ion-select-option *ngFor="let anio of aniosDisponibles">{{ anio }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      
+
+      <ion-item>
+        <ion-label>Mes</ion-label>
+        <ion-select [(ngModel)]="filtroMes" (ionChange)="filtrarReservas()">
+          <ion-select-option *ngFor="let mes of mesesDisponibles" [value]="mes.value">{{ mes.label }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+  </div>
+
+  <!-- Lista de Reservas Filtradas -->
+  <ion-list>
+    <ion-item *ngFor="let reserva of reservasFiltradas" class="reserva-card">
       <ion-label>
-        <h2>Especialidad: {{reserva.especialidad}}</h2>
-        <p>Médico: {{reserva.medicoNombre}}</p>
-        <p>Fecha: {{reserva.fecha}}</p>
-        <p>Hora: {{reserva.hora}}</p>
-        <p>Estado: {{reserva.estado}}</p>
+        <h2>{{ reserva.fecha }} - {{ reserva.hora }}</h2>
+        <p><strong>Médico:</strong> {{ reserva.nombreCompletoMedico }}</p>
+        <p><strong>Especialidad:</strong> {{ reserva.especialidad }}</p>
+        <p><strong>Estado:</strong>
+          <span [class]="reserva.estado === 'Confirmada' ? 'estado-confirmada' : 'estado-pendiente'">
+            {{ reserva.estado }}
+          </span>
+        </p>
       </ion-label>
-      <!-- Botones para modificar o cancelar la reserva -->
-      <ion-button color="primary" (click)="editarReserva(reserva.id, $event)">Editar</ion-button>
-      <ion-button color="danger" (click)="cancelarReserva(reserva.id)">Cancelar</ion-button>
+      <ion-button
+        slot="end"
+        color="danger"
+        (click)="eliminarReserva(reserva.id)"
+        [disabled]="reserva.estado === 'Completada'">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
     </ion-item>
   </ion-list>
 
-  <!-- Si no hay reservas -->
-  <ion-item *ngIf="reservas.length === 0">
-    <ion-label>No tienes reservas.</ion-label>
-  </ion-item>
-
-  <!-- Botón para agregar una nueva reserva -->
-  <a [routerLink]="['/reservas']" class="btn btn-primary">Ir a reservar </a>
+  <!-- Botón de Acción -->
+  <div class="action-footer">
+    <a [routerLink]="['/reservas']" class="btn-reserva">
+      <ion-icon name="calendar-outline"></ion-icon> Ir a reservar
+    </a>
+  </div>
 </ion-content>
-

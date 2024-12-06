@@ -1,0 +1,65 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ng-container *ngIf="!loading; else loadingState">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Información del Usuario</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="avatar-container">
+          <ion-avatar>
+            <img src="assets/img/default-avatar.jpg" alt="Profile photo" />
+          </ion-avatar>
+        </div>
+
+
+        <div class="user-info">
+          <ion-list lines="none">
+            <ion-item *ngIf="editableUser">
+              <ion-label position="stacked">Nombre</ion-label>
+              <ion-input
+                [(ngModel)]="editableUser.nombre"
+                class="editable-input"
+                placeholder="Tu nombre">
+              </ion-input>
+            </ion-item>
+            
+
+            <ion-item>
+              <ion-label position="stacked">Email</ion-label>
+              <ion-text>{{ user?.email }}</ion-text>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">RUT</ion-label>
+              <ion-text>{{ user?.rut }}</ion-text>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <div class="button-group">
+          <ion-button expand="block" fill="outline"  (click)="toggleEdit()">
+            {{ isEditing ? 'Cancelar' : 'Editar Perfil' }}
+          </ion-button>
+          <ion-button *ngIf="isEditing" expand="full" color="success" (click)="saveChanges()">
+            Guardar Cambios
+          </ion-button>
+          <ion-button expand="block" fill="outline" color="danger" (click)="logout()">Cerrar Sesión</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <!-- Estado de carga -->
+  <ng-template #loadingState>
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p>Cargando perfil...</p>
+    </div>
+  </ng-template>
+</ion-content>

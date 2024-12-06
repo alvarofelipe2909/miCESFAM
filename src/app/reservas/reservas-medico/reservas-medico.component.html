@@ -1,27 +1,108 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Reservas Asignadas</ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="header-container">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Reservas Asignadas</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</div>
 
-<ion-content>
-  <ion-list *ngIf="reservas.length > 0">
-    <ion-item *ngFor="let reserva of reservas">
-      <ion-label>
-        <h2>Paciente: {{reserva.pacienteNombre}}</h2>
-        <p>Especialidad: {{reserva.especialidad}}</p>
-        <p>Fecha: {{reserva.fecha}}</p>
-        <p>Hora: {{reserva.hora}}</p>
-        <p>Estado: {{reserva.estado}}</p>
-      </ion-label>
-      <!-- Botones para confirmar o completar la reserva -->
-      <ion-button color="primary" (click)="confirmarReserva(reserva.id)" *ngIf="reserva.estado === 'Pendiente'">Confirmar</ion-button>
-      <ion-button color="success" (click)="completarReserva(reserva.id)" *ngIf="reserva.estado === 'Confirmada'">Completar</ion-button>
-    </ion-item>
-  </ion-list>
+<ion-content class="ion-padding">
+  <div class="content-container">
+    <!-- Filtros de estado -->
+    <div class="filtros-container">
+      <h3 class="seccion-titulo">Filtrar por estado</h3>
+      <div class="filtros-botones">
+        <ion-button 
+          [class.active]="filtroEstado === 'todos'"
+          (click)="filtrarReservas('todos')"
+          fill="outline">
+          Todos
+        </ion-button>
+        <ion-button 
+          [class.active]="filtroEstado === 'Pendiente'"
+          (click)="filtrarReservas('Pendiente')"
+          fill="outline">
+          Pendientes
+        </ion-button>
+        <ion-button 
+          [class.active]="filtroEstado === 'Confirmada'"
+          (click)="filtrarReservas('Confirmada')"
+          fill="outline">
+          Confirmadas
+        </ion-button>
+        <ion-button 
+          [class.active]="filtroEstado === 'Completada'"
+          (click)="filtrarReservas('Completada')"
+          fill="outline">
+          Completadas
+        </ion-button>
+      </div>
+    </div>
 
-  <!-- Si no hay reservas -->
-  <ion-item *ngIf="reservas.length === 0">
-    <ion-label>No tienes reservas asignadas.</ion-label>
-  </ion-item>
+    <!-- Lista de reservas -->
+    <div class="reservas-container" *ngIf="getReservasFiltradas().length > 0">
+      <div class="reserva-card" *ngFor="let reserva of getReservasFiltradas()">
+        <div class="reserva-header">
+          <h2 class="nombre-paciente">{{reserva.nombreCompletoPaciente}}</h2>
+          <span class="estado-badge" [class]="getEstadoColor(reserva.estado)">
+            {{reserva.estado}}
+          </span>
+        </div>
+        
+        <div class="reserva-detalles">
+          <div class="detalle-item">
+            <ion-icon name="medical-outline"></ion-icon>
+            <span>{{reserva.especialidad}}</span>
+          </div>
+          <div class="detalle-item">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <span>{{reserva.fecha}}</span>
+          </div>
+          <div class="detalle-item">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>{{reserva.hora}}</span>
+          </div>
+        </div>
+
+        <div class="reserva-acciones">
+          <ion-button 
+            color="primary" 
+            (click)="confirmarReserva(reserva.id)" 
+            *ngIf="reserva.estado === 'Pendiente'">
+            <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+            Confirmar
+          </ion-button>
+          <ion-button 
+            color="success" 
+            (click)="completarReserva(reserva.id)" 
+            *ngIf="reserva.estado === 'Confirmada'">
+            <ion-icon name="checkbox-outline" slot="start"></ion-icon>
+            Completar
+          </ion-button>
+          <ion-button 
+            color="danger" 
+            (click)="rechazarReserva(reserva.id)" 
+            *ngIf="reserva.estado === 'Pendiente'">
+            <ion-icon name="close-outline" slot="start"></ion-icon>
+            Rechazar
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje sin reservas -->
+    <div class="sin-reservas" *ngIf="getReservasFiltradas().length === 0">
+      <ion-icon name="calendar-clear-outline" class="icono-grande"></ion-icon>
+      <h3>No hay reservas disponibles</h3>
+      <p>No tienes reservas asignadas para mostrar</p>
+      <ion-button
+        routerLink="/disponibilidad"
+        expand="block"
+        class="btn-disponibilidad">
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        Agregar Disponibilidad
+      </ion-button>
+    </div>
+  </div>
+  
 </ion-content>

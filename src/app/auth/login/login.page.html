@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Contenedor principal del grid -->
+  <div class="login-container">
+    <!-- Logo superior -->
+    <div class="login-logo">
+      <img src="../../assets/img/logo.png" alt="Logo CESFAM" />
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+      <ion-item>
+        <ion-label position="floating">RUT (Sin puntos ni guión)</ion-label>
+        <ion-input formControlName="rut" type="text" placeholder="111111111"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input formControlName="password" type="password"></ion-input>
+      </ion-item>
+      <ion-button expand="block" type="submit" class="btn-custom-primary">Iniciar sesión</ion-button>
+    </form>
+
+
+    <div class="login-buttons">
+      <ion-button expand="block" fill="outline" routerLink="/registro" class="btn-custom-outline">Registrarse</ion-button>
+      <ion-button expand="block" fill="clear" routerLink="/password-reset" class="btn-custom-clear">Recuperar contraseña</ion-button>
+    </div>
+
+    <!-- Mensajes de error/éxito -->
+    <div *ngIf="errorMensaje" class="error-message">{{ errorMensaje }}</div>
+    <div *ngIf="succesMensaje" class="success-message">{{ succesMensaje }}</div>
+  </div>
+
+  
+    <!-- Sección de beneficios -->
+    <div class="benefits-section">
+      <ion-text>
+        <h2>Conoce los beneficios</h2>
+        <p>Accede a tus datos médicos y agiliza tus trámites digitales.</p>
+      </ion-text>
+  
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <ion-icon name="document-text-outline" size="large"></ion-icon>
+          <p>Ver resultados de exámenes</p>
+        </div>
+        <div class="benefit-item">
+          <ion-icon name="people-outline" size="large"></ion-icon>
+          <p>Notificaciones de tus médicos</p>
+        </div>
+        <div class="benefit-item">
+          <ion-icon name="calendar-outline" size="large"></ion-icon>
+          <p>Reservas de horas</p>
+        </div>
+        <div class="benefit-item">
+          <ion-icon name="medkit-outline" size="large"></ion-icon>
+          <p>Visualización de recetas</p>
+        </div>
+      </div>
+    </div>
+</ion-content>

@@ -1,0 +1,43 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Enviar Mensaje</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-item>
+    <ion-label position="floating">Buscar paciente</ion-label>
+    <ion-input [(ngModel)]="busqueda" (ionInput)="onBusquedaChange($event)" class="search-input"></ion-input>
+  </ion-item>
+
+
+  <ion-list *ngIf="pacientesFiltrados.length > 0" class="results-list">
+    <ion-item *ngFor="let paciente of pacientesFiltrados" (click)="seleccionarPaciente(paciente)" class="result-item">
+      {{ paciente.nombre }} {{ paciente.apellido }} - {{ paciente.rut }}
+    </ion-item>
+  </ion-list>
+
+
+  <ion-card *ngIf="pacienteSeleccionado" class="selected-patient-card">
+    <ion-card-header>
+      <ion-card-title>Paciente seleccionado</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><strong>Nombre:</strong> {{ pacienteSeleccionado.nombre }}</p>
+      <p><strong>Email:</strong> {{ pacienteSeleccionado.email }}</p>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-item class="message-input">
+    <ion-label position="floating">Escriba el mensaje</ion-label>
+    <ion-textarea [(ngModel)]="mensaje"></ion-textarea>
+  </ion-item>
+
+
+  <ion-button expand="block" (click)="enviarMensaje()" class="send-button">
+    <ion-icon name="send-outline" slot="start"></ion-icon>
+    Enviar Mensaje
+  </ion-button>
+</ion-content>

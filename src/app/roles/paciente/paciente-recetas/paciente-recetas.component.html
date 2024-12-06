@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Mis Recetas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="content-background">
+  <ion-list *ngIf="recetas.length > 0; else noReceta">
+    <ion-card *ngFor="let receta of recetas" class="receta-card">
+      <ion-card-header>
+        <ion-card-title>{{ receta.nombrePaciente }}</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p>{{ receta.descripcion }}</p>
+      </ion-card-content>
+
+      <ion-button expand="block" color="secondary" shape="round" fill="outline" size="default" (click)="downloadPDF(receta.pdfUrl)">
+        Ver/Descargar PDF
+      </ion-button>
+    </ion-card>
+  </ion-list>
+
+  <ng-template #noReceta>
+    <div class="no-receta">
+      <ion-icon name="document-text-outline" size="large"></ion-icon>
+      <h3>No hay recetas disponibles</h3>
+      <p>Las recetas aparecerán aquí cuando estén listas</p>
+    </div>
+  </ng-template>
+</ion-content>

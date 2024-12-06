@@ -10,41 +10,57 @@
       <ion-title size="large">paciente</ion-title>
     </ion-toolbar>
   </ion-header>
-
+<app-index></app-index>
+<div class="cards-container">
   <div class="card" style="width: 18rem;">
     <img src="assets/img/consultas.jpg" class="card-img-top" alt="consultas.jpg">
     <div class="card-body">
       <h5 class="card-title">Reserva de horas</h5>
-      <p class="card-text">Aquí podrás reservar las horas de tus consultas y/o exámenes!</p>
-      <a [routerLink]="['/reservas-paciente']" class="btn btn-primary">Ir</a>
+      <p class="card-text">Aquí podrás reservar las horas de tus consultas!</p>
+      <div class="button-container">
+        <ion-button expand="block" routerLink="/reservas-paciente" class="btn-custom-primary">Ir a reservar</ion-button>
+      </div>
     </div>
   </div>
+</div>
 
+<div class="cards-container">
   <div class="card" style="width: 18rem;">
     <img src="assets/img/farmacia.jpg" class="card-img-top" alt="farmacia.jpg">
     <div class="card-body">
-      <h5 class="card-title">Retiro Medicamentos</h5>
-      <p class="card-text">Aquí podrás visualizar toda la información sobre tus medicamentos.</p>
-      <a href="#" class="btn btn-primary">Ir</a>
+      <h5 class="card-title">Visualizar lista de medicamentos</h5>
+      <p class="card-text">Aquí podrás visualizar toda la información sobre los medicamentos disponibles en nuestro almacén.</p>
+      <div class="button-container">
+        <ion-button expand="block" routerLink="/lista-medicamentos" class="btn-custom-primary">Ir al listado de medicamentos</ion-button>
+      </div>
     </div>
   </div>
+</div>
 
+<div class="cards-container">
   <div class="card" style="width: 18rem;">
     <img src="assets/img/recetas.jpg" class="card-img-top" alt="recetas.jpg">
     <div class="card-body">
       <h5 class="card-title">Ver recetas</h5>
       <p class="card-text">Aquí podrás visualizar las recetas asignadas por tus médicos!</p>
-      <a href="#" class="btn btn-primary">Ir</a>
+      <div class="button-container">
+        <ion-button expand="block" routerLink="/receta-paciente" class="btn-custom-primary">Visualizar recetas</ion-button>
+      </div>
     </div>
   </div>
+</div>
 
+<div class="cards-container">
   <div class="card" style="width: 18rem;">
     <img src="assets/img/examen.jpg" class="card-img-top" alt="examen.jpg">
     <div class="card-body">
       <h5 class="card-title">Ver exámenes</h5>
       <p class="card-text">Aquí podrás ver los resultados de tus exámenes </p>
-      <a href="#" class="btn btn-primary">Ir</a>
+      <div class="button-container">
+        <ion-button expand="block" routerLink="/examen-paciente" class="btn-custom-primary">Visualizar exámenes</ion-button>
+      </div>
     </div>
   </div>
+</div>
 </ion-content>
 

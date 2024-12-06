@@ -1,0 +1,65 @@
+:host {
+  ion-label{
+    color: #061a40ff;
+  }
+  ion-content {
+    --background: #eef3f8;
+  }
+
+  ion-toolbar {
+    --background: #0260a7ff;
+    --color: white;
+  }
+
+  ion-list-header {
+    font-size: 22px;
+  }
+
+  ion-button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .full-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  ion-button {
+    --background: #0260a7ff;
+    --color: white;
+    --border-radius: 12px;
+    --padding-start: 10px;
+    --padding-end: 10px;
+
+    ion-icon {
+      font-size: 1.2em;
+    }
+
+    &:hover {
+      --background: #006daaff;
+    }
+  }
+
+
+  .pedido-label{
+    font-size: 19px;
+    font-weight: bold;
+  }
+  
+  .pedido-container{
+    padding: 15px;
+  background: white;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .custom-searchbar {
+    --box-shadow: none;
+    --border-radius: 8px;
+    --background: white;
+    --placeholder-color: var(--ion-color-medium);
+    margin: 0 10px 10px 10px;
+  }
+}

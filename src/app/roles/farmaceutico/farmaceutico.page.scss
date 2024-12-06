@@ -1,0 +1,88 @@
+:host{
+  .medicamento-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  ion-thumbnail {
+    margin-right: 15px;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  ion-list-header {
+    text-align: center;
+    font-size: 22px;
+    color: #061a40ff;
+    margin-bottom: 8px;
+  }
+
+
+  
+  .full-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  ion-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    text-align: center;
+  }
+  .btn-custom-primary {
+    background: #0260a7ff;
+    color: #fff; /* Color del texto */
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 20px;
+    padding: 0 10px;
+  }
+
+  .benefit-item {
+    background: #ffffff;
+    padding: 20px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 2px solid #061a40ff;
+    text-align: center;
+    transition: transform 0.2s;
+  
+    &:hover {
+      transform: translateY(-2px);
+    }
+  
+    ion-icon {
+      color: #061a40ff;
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+  
+    p {
+      font-size: 14px;
+      margin: 0;
+      color: #333;
+      line-height: 1.4;
+    }
+  }
+}

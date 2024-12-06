@@ -1,0 +1,26 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Lista Pedidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-card *ngFor="let pedido of pedidos" class="pedido-card">
+      <ion-card-header>
+        <ion-card-title> {{ pedido.nombre_paciente }} </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div *ngFor="let c of pedido.nombre; let i = index">
+          <p>Remedio: {{ pedido.nombre[i] }}, Cantidad: {{pedido.cantidad[i]}}</p>
+        </div>
+        <div *ngIf="pedido.flag_validacion" class="pedido-valid">
+          <h1> El pedido ha sido validado</h1>
+        </div>
+      </ion-card-content>
+      <ion-button expand="block" color="secondary" shape="round" fill="outline" size="default" [disabled]="pedido.flag_validacion" (click)="validarPedido(pedido.id, pedido)">
+        Validar pedido
+      </ion-button>
+    </ion-card>
+  </ion-list>
+</ion-content>

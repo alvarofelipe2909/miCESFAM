@@ -1,0 +1,174 @@
+:host {
+  --page-margin: 16px;
+  --card-border-radius: 12px;
+  --input-margin-bottom: 16px;
+
+  .content-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--page-margin);
+  }
+
+  // Estilos para las cards
+  ion-card {
+    border-radius: var(--card-border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 0 0 var(--page-margin);
+
+    ion-card-header {
+      padding: 16px;
+
+      ion-card-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--yale-blue);
+      }
+    }
+  }
+
+  // Estilos para el formulario
+  .form-card {
+    .form-item {
+      --padding-start: 0;
+      --inner-padding-end: 0;
+      --background: transparent;
+
+
+      ion-label {
+        margin-bottom: 16px;
+        .input-icon {
+          margin-right: 8px;
+          color: var(--yale-blue);
+          
+        }
+      }
+
+      ion-input,
+      ion-textarea {
+        --padding-start: 20px;
+        --background: var(--ion-color-light);
+        --border-radius: 8px;
+        margin-top: 8px;
+        
+      }
+    }
+
+    .submit-button {
+      margin-top: 24px;
+      --background: var(--yale-blue);
+    }
+  }
+
+  // Lista de sugerencias de pacientes
+  .pacientes-suggestions {
+    margin-top: 8px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    ion-item {
+      --padding-start: 16px;
+      --padding-end: 16px;
+      --background: var(--ion-color-light);
+
+      &:hover {
+        --background: var(--ion-color-light-shade);
+      }
+
+      h3 {
+        font-weight: 500;
+        margin-bottom: 4px;
+        
+      }
+
+      p {
+        color: var(--ion-color-medium);
+        font-size: 0.9em;
+      }
+    }
+  }
+
+  // Lista de recetas
+  .recetas-list-card {
+    ion-searchbar {
+      --box-shadow: none;
+      --background: var(--ion-color-light);
+      --border-radius: 8px;
+      padding: 0;
+      margin-top: 12px;
+    }
+
+    .recetas-list {
+      background: transparent;
+
+      .receta-item {
+        --padding-start: 16px;
+        --padding-end: 16px;
+        --padding-top: 12px;
+        --padding-bottom: 12px;
+        --border-radius: 8px;
+        margin-bottom: 8px;
+
+        h2 {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: var(--yale-blue);
+          margin-bottom: 4px;
+        }
+
+        .rut {
+          color: var(--ion-color-medium);
+          font-size: 0.9rem;
+          margin-bottom: 4px;
+        }
+
+        .descripcion {
+          white-space: pre-wrap;
+          margin: 8px 0;
+        }
+
+        .fecha {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          color: var(--ion-color-medium);
+          font-size: 0.8rem;
+
+          ion-icon {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  // Estados de carga y vacío
+  .loading-container,
+  .empty-state {
+    padding: 32px;
+    text-align: center;
+    color: var(--ion-color-medium);
+
+    ion-spinner {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+    }
+
+    ion-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+}

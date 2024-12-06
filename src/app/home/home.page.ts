@@ -14,32 +14,73 @@ export class HomePage implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    this.authService.getCurrentUser().subscribe(user => {
-      if (user) {
-        this.authService.getUserRoleFromFirestore(user.uid).subscribe(role => {
-          this.userRole = role;
-          console.log('User role:', this.userRole); // Mensaje de depuración
-          this.redirectToRolePage();
-        });
-      } else {
-        console.error('No user found');
-        this.router.navigate(['/login']);
+    this.authService.getCurrentUser().subscribe(
+      user => {
+        if (user) {
+          this.authService.getUserRoleFromFirestore(user.uid).subscribe(
+            role => {
+              this.userRole = role;
+              console.log('User role:', this.userRole);
+              this.redirectToRolePage();
+            },
+            error => {
+              console.error('Error fetching user role:', error);
+              this.loading = false;
+            }
+          );
+        } else {
+          console.error('No user found');
+          this.loading = false;
+          
+          this.router.navigate(['/login']);
+        }
+      },
+      error => {
+        console.error('Error fetching current user:', error);
+        this.loading = false;
       }
-    });
+    );
   }
 
-  normalizeRole(role: string | undefined): string | undefined {
-    if (!role) return undefined;
-    return role.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  ionViewWillEnter() {
+    // Redirección cada vez que el usuario navega al "home"
+    this.loading = true;
+    this.authService.getCurrentUser().subscribe(
+      user => {
+        if (user) {
+          this.authService.getUserRoleFromFirestore(user.uid).subscribe(
+            role => {
+              this.userRole = role;
+              console.log('User role:', this.userRole);
+              this.redirectToRolePage();
+            },
+            error => {
+              console.error('Error fetching user role:', error);
+              this.loading = false;
+            }
+          );
+        } else {
+          console.error('No user found');
+          this.loading = false;
+          this.router.navigate(['/login']);
+        }
+      },
+      error => {
+        console.error('Error fetching current user:', error);
+        this.loading = false;
+      }
+    );
   }
 
   redirectToRolePage() {
-    const normalizedRole = this.normalizeRole(this.userRole);
-    if (!normalizedRole) {
-      console.error('No user role found');
+    if (!this.userRole) {
+      console.error('User role is undefined');
+      this.loading = false;
+      this.router.navigate(['/home']);
       return;
     }
 
+    const normalizedRole = this.userRole.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
     switch (normalizedRole) {
       case 'paciente':
         this.router.navigate(['/paciente']);
@@ -55,9 +96,9 @@ export class HomePage implements OnInit {
         break;
       default:
         console.error('Unknown user role:', normalizedRole);
-        this.loading = false;
         this.router.navigate(['/home']);
         break;
     }
+    this.loading = false;
   }
 }

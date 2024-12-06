@@ -1,0 +1,147 @@
+:host {
+  display: block;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.header-container {
+  ion-toolbar {
+    --background: #fff;
+    --color: #0260a7ff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    ion-title {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #0260a7ff;
+    }
+  }
+}
+
+.form-container {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.form-section {
+  margin-bottom: 2rem;
+
+  .section-title {
+    color: #0260a7ff;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+}
+
+.date-picker-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+
+  .custom-datetime {
+    width: 100%;
+    --background: white;
+    --ion-color-primary: #0260a7ff;
+    padding: 0.5rem;
+  }
+}
+
+.hours-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.75rem;
+  padding: 0.5rem;
+}
+
+.hora-chip {
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.75rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  color: #2C3E50;
+
+  &:hover {
+    background-color: #e9ecef;
+  }
+
+  &.selected {
+    background-color: #0260a7ff;
+    color: white;
+    border-color: #0260a7ff;
+  }
+}
+
+.button-container {
+  margin-top: 2rem;
+
+  .submit-button {
+    --background: #0260a7ff;
+    --background-hover: #b9d6f2ff;
+    --background-activated: #0260a7ff;
+    --border-radius: 6px;
+    --padding-top: 1rem;
+    --padding-bottom: 1rem;
+    font-weight: 500;
+    text-transform: none;
+    
+    &:disabled {
+      --background: #cccccc;
+      opacity: 0.7;
+    }
+  }
+}
+
+  .btn-custom-primary{
+    --background: #0260a7ff;
+    --background-hover: #b9d6f2ff;
+    --background-activated: #0260a7ff;
+    font-weight: 500;
+    text-transform: none;
+  }
+
+  .btn-custom-outline{
+    --background-hover: #b9d6f2ff;
+    --background-activated: #0260a7ff;
+    --border-color: #0260a7ff;
+    color: #0260a7ff;
+    font-weight: 500;
+    text-transform: none;
+  }
+
+// Responsive
+@media (min-width: 768px) {
+  .reservas-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .reservas-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// Estilos específicos para iOS
+.ios {
+  .header-container ion-toolbar {
+    --padding-top: 1rem;
+    --padding-bottom: 1rem;
+  }
+}
+
+// Estilos específicos para Android
+.md {
+  .header-container ion-toolbar {
+    --padding-top: 0.5rem;
+    --padding-bottom: 0.5rem;
+  }
+}

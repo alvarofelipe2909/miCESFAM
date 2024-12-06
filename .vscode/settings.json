@@ -4,6 +4,9 @@
     "@ionic/angular/standalone"
   ],
   "cSpell.words": [
-    "authguard"
+    "authguard",
+    "Datetime",
+    "firestore",
+    "Peñalolen"
   ]
 }

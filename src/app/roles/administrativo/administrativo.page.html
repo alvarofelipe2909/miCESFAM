@@ -10,13 +10,30 @@
       <ion-title size="large">administrativo</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <div class="card" style="width: 18rem;">
-    <img src="assets/img/consultas.jpg" class="card-img-top" alt="consultas.jpg">
-    <div class="card-body">
-      <h5 class="card-title">Gestión de horas</h5>
-      <p class="card-text">Aquí podrás gestionar las horas de las consultas y/o exámenes de los pacientes!</p>
-      <a href="#" class="btn btn-primary">Ir</a>
+  <app-index></app-index>
+  <div class="cards-container">
+    <div class="card" style="width: 18rem;">
+      <img src="assets/img/consultas.jpg" class="card-img-top" alt="consultas.jpg">
+      <div class="card-body">
+        <h5 class="card-title">Gestión de horas</h5>
+        <p class="card-text">Aquí podrás gestionar las horas de las consultas y/o exámenes de los pacientes!</p>
+        <div class="button-container">
+          <ion-button  expand="block" href="reservas-administrativo" class="btn-custom-primary">Ir a la gestión de reservas</ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="cards-container">
+    <div class="card" style="width: 18rem;">
+      <img src="assets/img/consultas.jpg" class="card-img-top" alt="consultas.jpg">
+      <div class="card-body">
+        <h5 class="card-title">Envío de mensajes</h5>
+        <p class="card-text">Aquí podrás enviar correos personalizados a los pacientes</p>
+        <div class="button-container">
+          <ion-button expand="block" routerLink="/enviar-mensaje" class="btn-custom-primary">Ir a notificar a un paciente</ion-button>
+        </div>
+      </div>
     </div>
   </div>
 

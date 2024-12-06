@@ -1,0 +1,52 @@
+/* Fondo semi-transparente para las leyendas en tamaños de pantalla grandes */
+.carousel-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    width: 90%;
+    max-width: 700px;
+  }
+  
+
+  @media (max-width: 768px) {
+    .carousel-caption {
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 10px;
+      width: 80%;
+      bottom: 10px;
+    }
+  
+    .carousel-caption h5 {
+      font-size: 1rem;
+    }
+  
+    .carousel-caption p {
+      font-size: 0.8rem;
+    }
+  
+    .carousel-image {
+      max-height: 400px;
+    }
+  }
+  
+
+  @media (max-width: 576px) {
+    .carousel-caption {
+      padding: 8px;
+      background-color: rgba(0, 0, 0, 0.3); 
+    }
+  
+    .carousel-caption h5 {
+      font-size: 0.9rem;
+    }
+  
+    .carousel-caption p {
+      font-size: 0.7rem;
+    }
+  }
+  

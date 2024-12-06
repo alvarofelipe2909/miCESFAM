@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,13 @@ import { Observable } from 'rxjs';
 export class EspecialidadesService {
   constructor(private firestore: AngularFirestore) { }
 
-  getEspecialidades(): Observable<any[]> {
-    return this.firestore.collection('especialidades').valueChanges();
+  // Método para obtener las especialidades desde Firestore
+  getEspecialidades(): Observable<string[]> {
+    return this.firestore.collection('especialidades').snapshotChanges().pipe(
+      map((actions: any[]) => actions.map(a => {
+        const data = a.payload.doc.data() as { nombre: string };
+        return data.nombre;
+      }))
+    );
   }
 }
